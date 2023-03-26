@@ -2,8 +2,8 @@ const express = require('express')
 const app = express()
 const port = 5000
 const mongoDB = require("./db")
-import cors from "cors"
-app.use(express.json())
+const passport = require("passport");
+const cors=require('cors');app.use(express.json())
 app.use(cors())
 
 mongoDB();
@@ -16,8 +16,15 @@ app.use((req,res,next)=>{
   next();
 })
 
+// Passport middleware
+app.use(passport.initialize());
+// Passport config
+require("./config/passport")(passport);
+
 app.use('/api', require("./Routes/CreatUser"));
 app.use('/api', require("./Routes/Login"));
+app.use('/api', require("./Routes/DisplayData"));
+app.use('/api', require("./Routes/OrderData"));
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
