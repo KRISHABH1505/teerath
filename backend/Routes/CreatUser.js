@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/User')
+const bcrypt = require("bcryptjs");
 // const { body, validationResult } = require('express-validator');
 
 
@@ -13,7 +14,9 @@ const User = require('../models/User')
 //   });
   router.post("/creatuser", (req, res) => {
     const {name, email, password}= req.body
-    User.findOne({email: email}, (err, user)=>{
+    User.findOne({email: email}, async (err, user)=>{
+        // const salt = await bcrypt.genSalt(10);
+        // let password = await bcrypt.hash(password, salt)
         if(user){
             res.send({message: "User Already Registered"})
         }
@@ -24,14 +27,34 @@ const User = require('../models/User')
                 password
             })
             //error checking
-            user.save(err => {
-                if(err){
-                    res.send(err)
-                }
-                else{
-                    res.send({ message: "Successfully Registerd, Please login now.!" })
-                }
-            })
+/////////////////////////////////////////////////////////
+
+// Hash password before saving in database
+bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(user.password, salt, (err, hash) => {
+      if (err) throw err;
+      user.password = hash;
+      user
+        .save()
+        .then(user => res.json(user))
+        .catch(err => console.log(err));
+        res.send({ message: "Successfully Registerd, Please login now.!" });
+    });
+  });
+
+
+
+
+
+///////////////////////////////////////////////////////////////
+            // user .save(err => {
+            //     if(err){
+            //         res.send(err)
+            //     }
+            //     else{
+            //         res.send({ message: "Successfully Registerd, Please login now.!" })
+            //     }
+            // })
         }
     })
     
