@@ -24,6 +24,9 @@ const Login=({setLoginUser}) => {
     .then(res => { 
       alert(res.data.message)
       setLoginUser(res.data.credentials)
+      localStorage.setItem("token",res.data.token)
+      localStorage.setItem("userEmail",res.data.email)
+      console.log(localStorage.getItem("token"))
       navigate('/')
     })
   }
