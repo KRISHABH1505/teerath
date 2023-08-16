@@ -1,8 +1,3 @@
-#Demo
-
-https://github.com/devyanshugautam/teerath/assets/77922228/0f9b9815-6722-4d85-87c1-f7edcc06d3d5
-
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
